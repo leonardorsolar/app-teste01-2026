@@ -47,9 +47,10 @@ especificação bruta (`/api-docs.json`).
 npm install
 npm start   # node src/server.js — porta 3000, ou $PORT se definida
 npm test    # jest via --experimental-vm-modules (necessário: "type": "module" no package.json)
+npm run lint  # ESLint 10 (flat config em eslint.config.js, regras js.configs.recommended)
 ```
 
-Não há scripts de `lint`, `format` ou `build` definidos em `package.json`.
+Não há scripts de `format`, `typecheck` ou `build` definidos em `package.json`.
 
 Health check: `GET /health` → `{ status: 'ok' }`.
 Documentação: `GET /api-docs` (UI) · `GET /api-docs.json` (spec bruta).
@@ -61,7 +62,8 @@ Documentação: `GET /api-docs` (UI) · `GET /api-docs.json` (spec bruta).
   `@openapi` em `src/routes/*.js`) + `swagger-ui-express` 5.0.1 (serve a UI).
 - Testes: Jest 30 + `supertest` 7, rodando sobre módulos ESM nativos
   (`node --experimental-vm-modules`).
-- Sem TypeScript, sem ORM/banco de dados, sem ESLint/Prettier configurados.
+- Lint: ESLint 10 com `@eslint/js` (recommended) + `globals` (node; jest nos `*.test.js`).
+- Sem TypeScript, sem ORM/banco de dados, sem Prettier configurado.
 - Node observado no ambiente: v24.18.0 — não há `engines` no `package.json`,
   então não é um requisito confirmado, apenas o que foi usado até aqui.
 
@@ -102,7 +104,7 @@ Documentação: `GET /api-docs` (UI) · `GET /api-docs.json` (spec bruta).
 
 **Sempre**
 
-- Rode `npm test` antes de considerar uma mudança pronta.
+- Rode `npm run lint` e `npm test` antes de considerar uma mudança pronta.
 - Documente rotas novas com um bloco `@openapi` inline, seguindo o padrão de
   [health.js](src/routes/health.js) — é a única fonte da documentação
   Swagger deste projeto.
@@ -117,7 +119,7 @@ Documentação: `GET /api-docs` (UI) · `GET /api-docs.json` (spec bruta).
 - Antes de adicionar tratamento de erro global, validação de ambiente, ou
   estrutura para futuras features — mesma decisão de escopo mínimo, listada
   como Não-Objetivo no PRD.
-- Antes de adicionar ferramentas de lint/format/CI — não existem hoje;
+- Antes de adicionar ferramentas de format/typecheck/CI — não existem hoje (lint já existe: ESLint);
   confirme se é o momento certo em vez de assumir que faltam por descuido.
 
 **Nunca**
